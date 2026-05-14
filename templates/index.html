@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitZone Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+        <h2>🔥 AtoZ FitZone</h2>
+        <a href="/logout"><button>Logout</button></a>
+    </div>
+
+    <!-- FORM -->
+    <div class="card">
+        <form id="memberForm">
+            <input type="hidden" id="memberId">
+
+            <input type="text" id="name" placeholder="Name" required>
+            <input type="number" id="age" placeholder="Age" required>
+
+            <select id="plan" required>
+                <option value="">Plan</option>
+                <option value="Basic">Basic</option>
+                <option value="Premium">Premium</option>
+            </select>
+
+            <p id="planSuggestion"></p>
+
+            <button type="submit">Save</button>
+        </form>
+    </div>
+
+    <!-- SEARCH -->
+    <input type="text" id="search" placeholder="Search...">
+
+    <!-- STATS -->
+    <div class="stats">
+        <div class="stat-card">
+            <h3>Total</h3>
+            <p id="totalCount">0</p>
+        </div>
+        <div class="stat-card">
+            <h3>Basic</h3>
+            <p id="basicCount">0</p>
+        </div>
+        <div class="stat-card">
+            <h3>Premium</h3>
+            <p id="premiumCount">0</p>
+        </div>
+    </div>
+
+    <!-- CHART -->
+    <div class="card">
+        <canvas id="chart"></canvas>
+        <br>
+        <canvas id="barChart"></canvas>
+    </div>
+
+    <!-- BMI -->
+    <div class="card">
+        <h3>BMI Calculator 🧠</h3>
+        <input type="number" id="weight" placeholder="Weight (kg)">
+        <input type="number" id="height" placeholder="Height (meters)">
+        <button onclick="calculateBMI()">Calculate</button>
+        <p id="bmiResult"></p>
+    </div>
+
+    <!-- TABLE -->
+    <div class="card">
+        <table id="memberTable">
+            <thead>
+                <tr>
+                    <th>ID</th><th>Name</th><th>Age</th><th>Plan</th><th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in members %}
+                <tr data-id="{{ m.id }}">
+                    <td>{{ m.id }}</td>
+                    <td>{{ m.name }}</td>
+                    <td>{{ m.age }}</td>
+                    <td>{{ m.plan }}</td>
+                    <td>
+                        <button class="editBtn">Edit</button>
+                        <button class="deleteBtn">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+
+const memberId = document.getElementById("memberId");
+const nameInput = document.getElementById("name");
+const ageInput = document.getElementById("age");
+const planInput = document.getElementById("plan");
+
+let chart, barChart;
+
+/* LOAD */
+document.addEventListener("DOMContentLoaded", () => {
+    updateStatsFromTable();
+});
+
+/* FORM SUBMIT */
+document.getElementById("memberForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    let id = memberId.value;
+    let name = nameInput.value.trim();
+    let age = ageInput.value;
+    let plan = planInput.value;
+
+    let url = id ? "/update_member" : "/add_member";
+
+    fetch(url,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({id,name,age,plan})
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        if(id){
+            updateRow(id,name,age,plan);
+        } else {
+            addRow(data.id,name,age,plan);
+        }
+
+        clearForm();
+        updateStatsFromTable();
+    });
+});
+
+/* ADD ROW */
+function addRow(id,name,age,plan){
+    let table = document.querySelector("#memberTable tbody");
+
+    let row = document.createElement("tr");
+    row.setAttribute("data-id", id);
+
+    row.innerHTML = `
+        <td>${id}</td>
+        <td>${name}</td>
+        <td>${age}</td>
+        <td>${plan}</td>
+        <td>
+            <button class="editBtn">Edit</button>
+            <button class="deleteBtn">Delete</button>
+        </td>
+    `;
+
+    table.appendChild(row);
+}
+
+/* UPDATE ROW */
+function updateRow(id,name,age,plan){
+    let row = document.querySelector(`tr[data-id="${id}"]`);
+    row.cells[1].innerText = name;
+    row.cells[2].innerText = age;
+    row.cells[3].innerText = plan;
+}
+
+/* DELETE + EDIT */
+document.getElementById("memberTable").addEventListener("click", function(e){
+
+    let row = e.target.closest("tr");
+    if(!row) return;
+
+    let id = row.dataset.id;
+
+    if(e.target.classList.contains("editBtn")){
+        memberId.value = id;
+        nameInput.value = row.cells[1].innerText;
+        ageInput.value = row.cells[2].innerText;
+        planInput.value = row.cells[3].innerText;
+    }
+
+    if(e.target.classList.contains("deleteBtn")){
+        if(confirm("Delete this member?")){
+            fetch("/delete_member",{
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify({id})
+            }).then(()=>{
+                row.remove();
+                updateStatsFromTable();
+            });
+        }
+    }
+
+});
+
+/* SEARCH */
+document.getElementById("search").addEventListener("keyup", function(){
+    let val = this.value.toLowerCase();
+
+    document.querySelectorAll("#memberTable tbody tr").forEach(row=>{
+        let name = row.cells[1].innerText.toLowerCase();
+        row.style.display = name.includes(val) ? "" : "none";
+    });
+});
+
+/* STATS + CHART */
+function updateStatsFromTable(){
+
+    let rows = document.querySelectorAll("#memberTable tbody tr");
+
+    let basic = 0;
+    let premium = 0;
+
+    rows.forEach(row=>{
+        let plan = row.cells[3].innerText;
+        if(plan==="Basic") basic++;
+        if(plan==="Premium") premium++;
+    });
+
+    document.getElementById("basicCount").innerText = basic;
+    document.getElementById("premiumCount").innerText = premium;
+    document.getElementById("totalCount").innerText = rows.length;
+
+    if(chart) chart.destroy();
+    chart = new Chart(document.getElementById("chart"), {
+        type: "doughnut",
+        data: {
+            labels: ["Basic","Premium"],
+            datasets: [{data:[basic,premium]}]
+        }
+    });
+
+    if(barChart) barChart.destroy();
+    barChart = new Chart(document.getElementById("barChart"), {
+        type: "bar",
+        data: {
+            labels: ["Basic","Premium"],
+            datasets: [{data:[basic,premium]}]
+        }
+    });
+}
+
+/* CLEAR */
+function clearForm(){
+    memberId.value="";
+    nameInput.value="";
+    ageInput.value="";
+    planInput.value="";
+}
+
+/* BMI */
+function calculateBMI(){
+    let w = parseFloat(document.getElementById("weight").value);
+    let h = parseFloat(document.getElementById("height").value);
+
+    if(!w || !h){
+        alert("Enter valid values");
+        return;
+    }
+
+    let bmi = (w/(h*h)).toFixed(2);
+    let status = bmi<18.5?"Underweight":bmi<25?"Normal":"Overweight";
+
+    document.getElementById("bmiResult").innerText =
+        `BMI: ${bmi} (${status})`;
+}
+
+/* SMART PLAN */
+ageInput.addEventListener("input", function(){
+
+    let age = parseInt(this.value);
+    let msg = document.getElementById("planSuggestion");
+
+    if(!age) return;
+
+    if(age < 18){
+        planInput.value="Basic";
+        msg.innerText="Suggested: Basic 🟢";
+    }
+    else if(age <= 40){
+        planInput.value="Premium";
+        msg.innerText="Suggested: Premium 🔥";
+    }
+    else{
+        planInput.value="Basic";
+        msg.innerText="Suggested: Basic 🟢";
+    }
+
+});
+
+</script>
+
+</body>
+</html>
