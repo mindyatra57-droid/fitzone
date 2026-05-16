@@ -1,113 +1,17 @@
 body {
     margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #0f172a, #1e293b);
+    font-family: Arial;
+    background: #0f172a;
     color: white;
 }
 
-/* CONTAINER */
-.container {
-    max-width: 1100px;
-    margin: auto;
-    padding: 20px;
-}
-
-/* TOPBAR */
-.topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-/* CARD */
-.card {
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    padding: 20px;
-    margin: 20px 0;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-}
-
-/* BUTTON */
-button {
-    background: linear-gradient(45deg, #22c55e, #4ade80);
-    border: none;
-    padding: 10px 18px;
-    border-radius: 10px;
-    color: black;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-button:hover {
-    transform: scale(1.05);
-    background: linear-gradient(45deg, #16a34a, #22c55e);
-}
-
-/* INPUT */
-input, select {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border-radius: 8px;
-    border: none;
-    outline: none;
-}
-
-/* STATS */
-.stats {
-    display: flex;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.stat-card {
-    flex: 1;
-    background: rgba(255,255,255,0.08);
-    padding: 15px;
-    border-radius: 12px;
-    text-align: center;
-}
-
-/* TABLE */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-td, th {
-    padding: 10px;
-    text-align: center;
-}
-
-tr:nth-child(even) {
-    background: rgba(255,255,255,0.05);
-}
-
-/* LOGOUT */
-.logout {
-    text-decoration: none;
-    color: red;
-    font-weight: bold;
-}
 /* SIDEBAR */
 .sidebar {
     position: fixed;
-    left: 0;
-    top: 0;
     width: 220px;
     height: 100%;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(10px);
+    background: #020617;
     padding: 20px;
-}
-
-.sidebar h2 {
-    margin-bottom: 20px;
 }
 
 .sidebar a {
@@ -115,50 +19,61 @@ tr:nth-child(even) {
     color: white;
     text-decoration: none;
     margin: 10px 0;
-    padding: 10px;
-    border-radius: 8px;
-    transition: 0.3s;
 }
 
-.sidebar a:hover {
-    background: rgba(255,255,255,0.1);
-}
-
-/* MAIN CONTENT SHIFT */
+/* MAIN */
 .main {
     margin-left: 240px;
     padding: 20px;
 }
 
+/* CARDS */
+.card {
+    background: #1e293b;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 10px;
+}
+
+/* STATS */
+.stats {
+    display: flex;
+    gap: 20px;
+}
+
+/* INPUT */
+input {
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    width: 100%;
+}
+
+/* BUTTON */
+button {
+    padding: 10px;
+    background: green;
+    color: white;
+    border: none;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    margin-top: 10px;
+}
+
+td, th {
+    padding: 10px;
+    text-align: left;
+}
+
 /* ANIMATION */
 .fade-in {
-    animation: fadeIn 0.8s ease-in-out;
+    animation: fadeIn 0.5s;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* MOBILE */
-@media(max-width: 768px) {
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-    }
-
-    .main {
-        margin-left: 0;
-    }
-
-    .stats {
-        flex-direction: column;
-    }
+    from {opacity: 0;}
+    to {opacity: 1;}
 }

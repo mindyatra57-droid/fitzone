@@ -2,12 +2,7 @@
 <html>
 <head>
     <title>FitZone Dashboard</title>
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
@@ -18,45 +13,37 @@
     <a href="#">Dashboard</a>
     <a href="#">Members</a>
     <a href="#">Plans</a>
-    <a href="/logout">Logout</a>
 </div>
 
-<!-- MAIN CONTENT -->
+<!-- MAIN -->
 <div class="main fade-in">
 
-    <!-- TOP -->
-    <div class="topbar">
-        <h2>Dashboard</h2>
-    </div>
+    <h1>FitZone Dashboard</h1>
 
-    <!-- STATS -->
     <div class="stats">
-        <div class="stat-card">
-            <h3>{{ total_members }}</h3>
+        <div class="card">
+            <h2>{{ total_members }}</h2>
             <p>Total Members</p>
         </div>
 
-        <div class="stat-card">
-            <h3>{{ active_members }}</h3>
+        <div class="card">
+            <h2>{{ active_members }}</h2>
             <p>Active Members</p>
         </div>
     </div>
 
-    <!-- ADD MEMBER -->
     <div class="card">
         <h3>Add Member</h3>
         <form method="POST">
-            <input name="name" placeholder="Member Name" required>
+            <input name="name" placeholder="Name" required>
             <input name="age" placeholder="Age" required>
             <input name="plan" placeholder="Plan" required>
-            <button type="submit">Add Member</button>
+            <button>Add Member</button>
         </form>
     </div>
 
-    <!-- MEMBER LIST -->
     <div class="card">
         <h3>Members List</h3>
-
         <table>
             <tr>
                 <th>Name</th>
@@ -71,7 +58,6 @@
                 <td>{{ m.plan }}</td>
             </tr>
             {% endfor %}
-
         </table>
     </div>
 
