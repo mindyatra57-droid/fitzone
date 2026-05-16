@@ -12,12 +12,21 @@
 
 <body>
 
-<div class="container">
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h2>🏋️ FitZone</h2>
+    <a href="#">Dashboard</a>
+    <a href="#">Members</a>
+    <a href="#">Plans</a>
+    <a href="/logout">Logout</a>
+</div>
 
-    <!-- TOPBAR -->
+<!-- MAIN CONTENT -->
+<div class="main fade-in">
+
+    <!-- TOP -->
     <div class="topbar">
-        <h2>🏋️ FitZone Dashboard</h2>
-        <a href="/logout" class="logout">Logout</a>
+        <h2>Dashboard</h2>
     </div>
 
     <!-- STATS -->
@@ -36,11 +45,10 @@
     <!-- ADD MEMBER -->
     <div class="card">
         <h3>Add Member</h3>
-
         <form method="POST">
             <input name="name" placeholder="Member Name" required>
             <input name="age" placeholder="Age" required>
-            <input name="plan" placeholder="Plan (Monthly / Yearly)" required>
+            <input name="plan" placeholder="Plan" required>
             <button type="submit">Add Member</button>
         </form>
     </div>
