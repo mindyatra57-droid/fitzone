@@ -22,8 +22,12 @@ def index():
 
         return redirect("/")
 
-    total_members = len(members)
-    active_members = len(members)
+    return render_template(
+        "index.html",
+        members=members,
+        total_members=len(members),
+        active_members=len(members)
+    )
 
     return render_template(
         "index.html",
@@ -31,7 +35,6 @@ def index():
         total_members=total_members,
         active_members=active_members
     )
-
 if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", 5000))
