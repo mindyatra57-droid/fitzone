@@ -10,58 +10,89 @@
 <!-- SIDEBAR -->
 <div class="sidebar">
     <h2>🏋️ FitZone</h2>
-    <a href="#">Dashboard</a>
-    <a href="#">Members</a>
-    <a href="#">Plans</a>
+
+    <a onclick="showSection('dashboard', this)" class="active">Dashboard</a>
+    <a onclick="showSection('members', this)">Members</a>
+    <a onclick="showSection('plans', this)">Plans</a>
 </div>
 
-<!-- MAIN -->
+<!-- MAIN CONTENT -->
 <div class="main fade-in">
 
-    <h1>FitZone Dashboard</h1>
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="section">
+        <h1>FitZone Dashboard</h1>
 
-    <div class="stats">
-        <div class="card">
-            <h2>{{ total_members }}</h2>
-            <p>Total Members</p>
+        <div class="stats">
+            <div class="card">
+                <h2>{{ total_members }}</h2>
+                <p>Total Members</p>
+            </div>
+
+            <div class="card">
+                <h2>{{ active_members }}</h2>
+                <p>Active Members</p>
+            </div>
         </div>
 
         <div class="card">
-            <h2>{{ active_members }}</h2>
-            <p>Active Members</p>
+            <h3>Add Member</h3>
+            <form method="POST">
+                <input name="name" placeholder="Name" required>
+                <input name="age" placeholder="Age" required>
+                <input name="plan" placeholder="Plan" required>
+                <button>Add Member</button>
+            </form>
         </div>
     </div>
 
-    <div class="card">
-        <h3>Add Member</h3>
-        <form method="POST">
-            <input name="name" placeholder="Name" required>
-            <input name="age" placeholder="Age" required>
-            <input name="plan" placeholder="Plan" required>
-            <button>Add Member</button>
-        </form>
+    <!-- MEMBERS -->
+    <div id="members" class="section" style="display:none;">
+        <div class="card">
+            <h3>Members List</h3>
+
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Plan</th>
+                </tr>
+
+                {% for m in members %}
+                <tr>
+                    <td>{{ m.name }}</td>
+                    <td>{{ m.age }}</td>
+                    <td>{{ m.plan }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 
-    <div class="card">
-        <h3>Members List</h3>
-        <table>
-            <tr>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Plan</th>
-            </tr>
-
-            {% for m in members %}
-            <tr>
-                <td>{{ m.name }}</td>
-                <td>{{ m.age }}</td>
-                <td>{{ m.plan }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+    <!-- PLANS -->
+    <div id="plans" class="section" style="display:none;">
+        <div class="card">
+            <h3>Plans Section</h3>
+            <p>Coming soon...</p>
+        </div>
     </div>
 
 </div>
+
+<!-- JS -->
+<script>
+function showSection(id, element) {
+    let sections = document.querySelectorAll(".section");
+    sections.forEach(sec => sec.style.display = "none");
+
+    document.getElementById(id).style.display = "block";
+
+    let links = document.querySelectorAll(".sidebar a");
+    links.forEach(link => link.classList.remove("active"));
+
+    element.classList.add("active");
+}
+</script>
 
 </body>
 </html>
