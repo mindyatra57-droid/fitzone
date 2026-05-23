@@ -57,7 +57,6 @@ def index():
         total_members=len(members),
         active_members=len(members)
     )
-return render_template(...)
 # DELETE MEMBER
 @app.route("/delete/<int:id>")
 def delete(id):
