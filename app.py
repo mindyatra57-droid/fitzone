@@ -57,12 +57,9 @@ def index():
         total_members=len(members),
         active_members=len(members)
     )
+return render_template(...)
 
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
-# DELETE MEMBER
+# DELETE ROUTE
 @app.route("/delete/<int:id>")
 def delete(id):
 
@@ -75,3 +72,8 @@ def delete(id):
     conn.close()
 
     return redirect("/")
+
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
