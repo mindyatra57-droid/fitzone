@@ -62,3 +62,16 @@ def index():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+# DELETE MEMBER
+@app.route("/delete/<int:id>")
+def delete(id):
+
+    conn = sqlite3.connect("gym.db")
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM members WHERE id = ?", (id,))
+
+    conn.commit()
+    conn.close()
+
+    return redirect("/")

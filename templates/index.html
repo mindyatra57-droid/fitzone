@@ -59,12 +59,18 @@
                 </tr>
 
                 {% for m in members %}
-                <tr>
-                    <td>{{ m[1] }}</td>
-                    <td>{{ m[2] }}</td>
-                    <td>{{ m[3] }}</td>
-                </tr>
-                {% endfor %}
+<tr>
+    <td>{{ m[1] }}</td>
+    <td>{{ m[2] }}</td>
+    <td>{{ m[3] }}</td>
+
+    <td>
+        <a href="/delete/{{ m[0] }}">
+            <button class="delete-btn">Delete</button>
+        </a>
+    </td>
+</tr>
+{% endfor %}
             </table>
         </div>
     </div>

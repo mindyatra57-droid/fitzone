@@ -84,3 +84,16 @@ td, th {
 .section {
     animation: fadeIn 0.4s ease-in-out;
 }
+.delete-btn{
+    background: crimson;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.delete-btn:hover{
+    opacity: 0.8;
+}
