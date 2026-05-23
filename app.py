@@ -1,26 +1,55 @@
-print("THIS IS NEW VERSION RUNNING")
 from flask import Flask, render_template, request, redirect
+import sqlite3
+import os
 
 app = Flask(__name__)
 
-members = []
+# DATABASE CREATE
+def init_db():
+    conn = sqlite3.connect("gym.db")
+    cursor = conn.cursor()
 
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS members (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        age TEXT,
+        plan TEXT
+    )
+    """)
+
+    conn.commit()
+    conn.close()
+
+init_db()
+
+
+# HOME
 @app.route("/", methods=["GET", "POST"])
 def index():
-    global members
 
+    conn = sqlite3.connect("gym.db")
+    cursor = conn.cursor()
+
+    # ADD MEMBER
     if request.method == "POST":
         name = request.form["name"]
         age = request.form["age"]
         plan = request.form["plan"]
 
-        members.append({
-            "name": name,
-            "age": age,
-            "plan": plan
-        })
+        cursor.execute(
+            "INSERT INTO members (name, age, plan) VALUES (?, ?, ?)",
+            (name, age, plan)
+        )
 
+        conn.commit()
         return redirect("/")
+
+    # GET MEMBERS
+    cursor.execute("SELECT * FROM members")
+    members = cursor.fetchall()
+
+    conn.close()
 
     return render_template(
         "index.html",
@@ -29,13 +58,7 @@ def index():
         active_members=len(members)
     )
 
-    return render_template(
-        "index.html",
-        members=members,
-        total_members=total_members,
-        active_members=active_members
-    )
+
 if __name__ == "__main__":
-    import os
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
