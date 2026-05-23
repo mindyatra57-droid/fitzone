@@ -58,8 +58,7 @@ def index():
         active_members=len(members)
     )
 return render_template(...)
-
-# DELETE ROUTE
+# DELETE MEMBER
 @app.route("/delete/<int:id>")
 def delete(id):
 
