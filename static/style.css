@@ -106,3 +106,12 @@ td, th {
     cursor:pointer;
     margin-right:8px;
 }
+.logout-btn{
+    background:crimson;
+    color:white;
+    border:none;
+    padding:10px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    margin-bottom:20px;
+}

@@ -1,9 +1,8 @@
-from flask import Flask, render_template, request, redirect
-import sqlite3
+from flask import Flask, render_template, request, redirect, session
 import os
 
 app = Flask(__name__)
-
+app.secret_key = "gym_secret_key"
 # DATABASE CREATE
 def init_db():
     conn = sqlite3.connect("gym.db")
@@ -100,6 +99,33 @@ def edit(id):
     conn.close()
 
     return render_template("edit.html", member=member)
+    # LOGIN
+@app.route("/login", methods=["GET", "POST"])
+def login():
+
+    if request.method == "POST":
+
+        username = request.form["username"]
+        password = request.form["password"]
+
+        if username == "admin" and password == "1234":
+
+            session["admin"] = True
+
+            return redirect("/")
+
+    return render_template("login.html")
+
+
+# LOGOUT
+@app.route("/logout")
+def logout():
+
+    session.pop("admin", None)
+
+    return redirect("/login")
+    if "admin" not in session:
+    return redirect("/login")
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
