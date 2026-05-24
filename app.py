@@ -75,3 +75,32 @@ def delete(id):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+    # EDIT MEMBER
+@app.route("/edit/<int:id>", methods=["GET", "POST"])
+def edit(id):
+
+    conn = sqlite3.connect("gym.db")
+    cursor = conn.cursor()
+
+    if request.method == "POST":
+
+        name = request.form["name"]
+        age = request.form["age"]
+        plan = request.form["plan"]
+
+        cursor.execute(
+            "UPDATE members SET name=?, age=?, plan=? WHERE id=?",
+            (name, age, plan, id)
+        )
+
+        conn.commit()
+        conn.close()
+
+        return redirect("/")
+
+    cursor.execute("SELECT * FROM members WHERE id=?", (id,))
+    member = cursor.fetchone()
+
+    conn.close()
+
+    return render_template("edit.html", member=member)

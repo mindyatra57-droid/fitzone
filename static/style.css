@@ -97,3 +97,12 @@ td, th {
 .delete-btn:hover{
     opacity: 0.8;
 }
+.edit-btn{
+    background:#0077ff;
+    color:white;
+    border:none;
+    padding:8px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    margin-right:8px;
+}
