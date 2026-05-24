@@ -1,10 +1,14 @@
 from flask import Flask, render_template, request, redirect, session
 import sqlite3
 import os
+
 app = Flask(__name__)
 app.secret_key = "gym_secret_key"
+
+
 # DATABASE CREATE
 def init_db():
+
     conn = sqlite3.connect("gym.db")
     cursor = conn.cursor()
 
@@ -20,6 +24,7 @@ def init_db():
     conn.commit()
     conn.close()
 
+
 init_db()
 
 
@@ -27,11 +32,16 @@ init_db()
 @app.route("/", methods=["GET", "POST"])
 def index():
 
+    # LOGIN PROTECTION
+    if "admin" not in session:
+        return redirect("/login")
+
     conn = sqlite3.connect("gym.db")
     cursor = conn.cursor()
 
     # ADD MEMBER
     if request.method == "POST":
+
         name = request.form["name"]
         age = request.form["age"]
         plan = request.form["plan"]
@@ -42,6 +52,7 @@ def index():
         )
 
         conn.commit()
+
         return redirect("/")
 
     # GET MEMBERS
@@ -56,9 +67,14 @@ def index():
         total_members=len(members),
         active_members=len(members)
     )
+
+
 # DELETE MEMBER
 @app.route("/delete/<int:id>")
 def delete(id):
+
+    if "admin" not in session:
+        return redirect("/login")
 
     conn = sqlite3.connect("gym.db")
     cursor = conn.cursor()
@@ -70,9 +86,13 @@ def delete(id):
 
     return redirect("/")
 
+
 # EDIT MEMBER
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
 def edit(id):
+
+    if "admin" not in session:
+        return redirect("/login")
 
     conn = sqlite3.connect("gym.db")
     cursor = conn.cursor()
@@ -99,7 +119,9 @@ def edit(id):
     conn.close()
 
     return render_template("edit.html", member=member)
-    # LOGIN
+
+
+# LOGIN
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
@@ -124,26 +146,10 @@ def logout():
     session.pop("admin", None)
 
     return redirect("/login")
-@app.route("/")
-def index():
 
-    if "admin" not in session:
-        return redirect("/login")
 
-    conn = sqlite3.connect("gym.db")
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT * FROM members")
-    members = cursor.fetchall()
-
-    conn.close()
-
-    return render_template(
-        "index.html",
-        members=members,
-        total_members=len(members),
-        active_members=len(members)
-    )
 if __name__ == "__main__":
+
     port = int(os.environ.get("PORT", 5000))
+
     app.run(host="0.0.0.0", port=port)
