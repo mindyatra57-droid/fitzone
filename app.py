@@ -71,11 +71,7 @@ def delete(id):
 
     return redirect("/")
 
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
-    # EDIT MEMBER
+# EDIT MEMBER
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
 def edit(id):
 
@@ -104,3 +100,6 @@ def edit(id):
     conn.close()
 
     return render_template("edit.html", member=member)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
