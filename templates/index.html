@@ -1,136 +1,203 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FitZone Dashboard</title>
+
     <link rel="stylesheet" href="/static/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<a href="/logout">
-    <button class="logout-btn">Logout</button>
-</a>
+
 <body>
 
 <!-- SIDEBAR -->
 <div class="sidebar">
+
     <h2>🏋️ FitZone</h2>
 
     <a onclick="showSection('dashboard', this)" class="active">Dashboard</a>
     <a onclick="showSection('members', this)">Members</a>
     <a onclick="showSection('plans', this)">Plans</a>
+
+    <a href="/logout">
+        <button class="logout-btn">Logout</button>
+    </a>
+
 </div>
 
-<!-- MAIN CONTENT -->
+<!-- MAIN -->
 <div class="main fade-in">
 
     <!-- DASHBOARD -->
     <div id="dashboard" class="section">
+
         <h1>FitZone Dashboard</h1>
 
+        <!-- STATS -->
         <div class="stats">
+
             <div class="card">
-                <h2>{{ total_members }}</h2>
-                <p>Total Members</p>
+                <h3>Total Members</h3>
+                <h1>{{ total_members }}</h1>
             </div>
 
             <div class="card">
-                <h2>{{ active_members }}</h2>
-                <p>Active Members</p>
+                <h3>Active Members</h3>
+                <h1>{{ active_members }}</h1>
             </div>
+
+            <div class="card">
+                <h3>Monthly Revenue</h3>
+                <h1>₹{{ total_members * 999 }}</h1>
+            </div>
+
         </div>
 
-    <div class="card">
-        <h3>Total Members</h3>
-        <h1>{{ total_members }}</h1>
-    </div>
+        <!-- ANALYTICS -->
+        <div class="analytics-box">
 
-    <div class="card">
-        <h3>Active Members</h3>
-        <h1>{{ active_members }}</h1>
-    </div>
+            <h2>Gym Analytics</h2>
 
-    <div class="card">
-        <h3>Monthly Revenue</h3>
-        <h1>₹{{ total_members * 999 }}</h1>
-    </div>
-<div class="analytics-box">
+            <div class="analytics-grid">
 
-    <h2>Gym Analytics</h2>
+                <div class="analytics-card">
+                    <span>💪 Premium Plans</span>
+                    <h1>{{ active_members }}</h1>
+                </div>
 
-    <div class="analytics-grid">
+                <div class="analytics-card">
+                    <span>🔥 New This Month</span>
+                    <h1>{{ total_members }}</h1>
+                </div>
 
-        <div class="analytics-card">
-            <span>💪 Premium Plans</span>
-            <h1>{{ active_members }}</h1>
+                <div class="analytics-card">
+                    <span>💰 Revenue</span>
+                    <h1>₹{{ total_members * 999 }}</h1>
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="analytics-card">
-            <span>🔥 New This Month</span>
-            <h1>{{ total_members }}</h1>
-        </div>
+        <!-- CHART -->
+        <div class="chart-box">
 
-        <div class="analytics-card">
-            <span>💰 Revenue</span>
-            <h1>₹{{ total_members * 999 }}</h1>
+            <h2>Gym Growth Analytics</h2>
+
+            <canvas id="myChart"></canvas>
+
         </div>
 
     </div>
 
-</div>
-</div>
     <!-- MEMBERS -->
     <div id="members" class="section" style="display:none;">
+
         <div class="card">
+
             <h3>Members List</h3>
 
             <table>
+
                 <tr>
                     <th>Name</th>
                     <th>Age</th>
                     <th>Plan</th>
+                    <th>Actions</th>
                 </tr>
 
                 {% for m in members %}
-<tr>
-    <td>{{ m[1] }}</td>
-    <td>{{ m[2] }}</td>
-    <td>{{ m[3] }}</td>
 
-    <td>
-        <a href="/edit/{{ m[0] }}">
-    <button class="edit-btn">Edit</button>
-</a>
-        <a href="/delete/{{ m[0] }}">
-            <button class="delete-btn">Delete</button>
-        </a>
-    </td>
-</tr>
-{% endfor %}
+                <tr>
+
+                    <td>{{ m[1] }}</td>
+                    <td>{{ m[2] }}</td>
+                    <td>{{ m[3] }}</td>
+
+                    <td>
+
+                        <a href="/edit/{{ m[0] }}">
+                            <button class="edit-btn">Edit</button>
+                        </a>
+
+                        <a href="/delete/{{ m[0] }}">
+                            <button class="delete-btn">Delete</button>
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
             </table>
+
         </div>
+
     </div>
 
     <!-- PLANS -->
     <div id="plans" class="section" style="display:none;">
+
         <div class="card">
+
             <h3>Plans Section</h3>
+
             <p>Coming soon...</p>
+
         </div>
+
     </div>
 
 </div>
 
 <!-- JS -->
 <script>
+
 function showSection(id, element) {
+
     let sections = document.querySelectorAll(".section");
+
     sections.forEach(sec => sec.style.display = "none");
 
     document.getElementById(id).style.display = "block";
 
     let links = document.querySelectorAll(".sidebar a");
+
     links.forEach(link => link.classList.remove("active"));
 
     element.classList.add("active");
 }
+
+
+// CHART
+const ctx = document.getElementById('myChart');
+
+new Chart(ctx, {
+
+    type: 'line',
+
+    data: {
+
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+
+        datasets: [{
+            label: 'Members Growth',
+            data: [5, 10, 18, 25, 40, {{ total_members }}],
+            borderWidth: 3,
+            tension: 0.4
+        }
+    },
+
+    options:{
+        responsive: true
+  }
+
+);
+
 </script>
 
 </body>

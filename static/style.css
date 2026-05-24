@@ -165,3 +165,22 @@ td, th {
     margin-top:15px;
     font-size:32px;
 }
+/* CHART */
+
+.chart-box{
+    margin-top:40px;
+    background:#111827;
+    padding:25px;
+    border-radius:20px;
+}
+
+.chart-box h2{
+    color:white;
+    margin-bottom:20px;
+}
+
+canvas{
+    background:white;
+    border-radius:15px;
+    padding:10px;
+}
