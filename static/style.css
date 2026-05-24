@@ -28,11 +28,18 @@ body {
 }
 
 /* CARDS */
-.card {
-    background: #1e293b;
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: 10px;
+.card{
+    background:linear-gradient(135deg,#1e293b,#0f172a);
+    padding:25px;
+    border-radius:20px;
+    color:white;
+    transition:0.3s;
+    border:1px solid rgba(255,255,255,0.1);
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
 }
 
 /* STATS */
@@ -114,4 +121,47 @@ td, th {
     border-radius:8px;
     cursor:pointer;
     margin-bottom:20px;
+}
+/* ANALYTICS */
+
+.analytics-box{
+    margin-top:40px;
+    background:#111827;
+    padding:25px;
+    border-radius:20px;
+}
+
+.analytics-box h2{
+    color:white;
+    margin-bottom:20px;
+}
+
+.analytics-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.analytics-card{
+    background:linear-gradient(135deg,#1e293b,#0f172a);
+    padding:25px;
+    border-radius:18px;
+    color:white;
+    transition:0.3s;
+    border:1px solid rgba(255,255,255,0.1);
+}
+
+.analytics-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+.analytics-card span{
+    color:#94a3b8;
+    font-size:14px;
+}
+
+.analytics-card h1{
+    margin-top:15px;
+    font-size:32px;
 }

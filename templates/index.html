@@ -37,17 +37,45 @@
             </div>
         </div>
 
-        <div class="card">
-            <h3>Add Member</h3>
-            <form method="POST">
-                <input name="name" placeholder="Name" required>
-                <input name="age" placeholder="Age" required>
-                <input name="plan" placeholder="Plan" required>
-                <button>Add Member</button>
-            </form>
-        </div>
+    <div class="card">
+        <h3>Total Members</h3>
+        <h1>{{ total_members }}</h1>
     </div>
 
+    <div class="card">
+        <h3>Active Members</h3>
+        <h1>{{ active_members }}</h1>
+    </div>
+
+    <div class="card">
+        <h3>Monthly Revenue</h3>
+        <h1>₹{{ total_members * 999 }}</h1>
+    </div>
+<div class="analytics-box">
+
+    <h2>Gym Analytics</h2>
+
+    <div class="analytics-grid">
+
+        <div class="analytics-card">
+            <span>💪 Premium Plans</span>
+            <h1>{{ active_members }}</h1>
+        </div>
+
+        <div class="analytics-card">
+            <span>🔥 New This Month</span>
+            <h1>{{ total_members }}</h1>
+        </div>
+
+        <div class="analytics-card">
+            <span>💰 Revenue</span>
+            <h1>₹{{ total_members * 999 }}</h1>
+        </div>
+
+    </div>
+
+</div>
+</div>
     <!-- MEMBERS -->
     <div id="members" class="section" style="display:none;">
         <div class="card">
