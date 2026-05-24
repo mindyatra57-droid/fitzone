@@ -124,8 +124,26 @@ def logout():
     session.pop("admin", None)
 
     return redirect("/login")
-if "admin" not in session:
-    return redirect("/login")
+@app.route("/")
+def index():
+
+    if "admin" not in session:
+        return redirect("/login")
+
+    conn = sqlite3.connect("gym.db")
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM members")
+    members = cursor.fetchall()
+
+    conn.close()
+
+    return render_template(
+        "index.html",
+        members=members,
+        total_members=len(members),
+        active_members=len(members)
+    )
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
