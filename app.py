@@ -124,7 +124,7 @@ def logout():
     session.pop("admin", None)
 
     return redirect("/login")
-    if "admin" not in session:
+if "admin" not in session:
     return redirect("/login")
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
