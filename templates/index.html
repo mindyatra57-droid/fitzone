@@ -147,15 +147,6 @@
 
     <!-- PLANS -->
     <div id="plans" class="section" style="display:none;">
-
-        <div class="card">
-
-            <h3>Plans Section</h3>
-
-            <p>Coming soon...</p>
-
-        </div>
-
     </div>
 
 </div>
@@ -163,7 +154,7 @@
 <!-- JS -->
 <script>
 
-function showSection(id, element) {
+function showSection(id, element=null) {
 
     let sections = document.querySelectorAll(".section");
 
@@ -175,10 +166,10 @@ function showSection(id, element) {
 
     links.forEach(link => link.classList.remove("active"));
 
-    element.classList.add("active");
+    if(element){
+        element.classList.add("active");
+    }
 }
-
-
 // CHART
 const ctx = document.getElementById('myChart');
 
@@ -223,15 +214,15 @@ if(localStorage.getItem("theme") === "light"){
 
 <div class="mobile-nav">
 
-    <button onclick="showSection('dashboard', this)">
+    <button onclick="showSection('dashboard')">
         🏠
     </button>
 
-    <button onclick="showSection('members', this)">
+    <button onclick="showSection('members')">
         👥
     </button>
 
-    <button onclick="showSection('plans', this)">
+    <button onclick="showSection('plans')">
         💳
     </button>
 
