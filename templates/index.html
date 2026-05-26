@@ -70,7 +70,7 @@
 
             <div class="card">
                 <h3>Monthly Revenue</h3>
-                <h1>₹{{ members | sum(attribute=5) }}</h1>
+                <h1>₹{{ total_members * 999 }}</h1>
             </div>
 
         </div>
@@ -94,7 +94,7 @@
 
                 <div class="analytics-card">
                     <span>💰 Revenue</span>
-                    <h1>₹{{ members | sum(attribute=5) }}</h1>
+                    <h1>₹{{ total_members * 999 }}</h1>
                 </div>
 
             </div>
@@ -170,7 +170,7 @@
 
         </div>
 
-        <!-- MEMBER TABLE -->
+        <!-- MEMBERS TABLE -->
         <div class="card">
 
             <h2>Members List</h2>
