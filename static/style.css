@@ -3,6 +3,7 @@ body {
     font-family: Arial;
     background: #0f172a;
     color: white;
+    overflow-x:hidden;
 }
 
 /* SIDEBAR */
@@ -183,4 +184,69 @@ canvas{
     background:white;
     border-radius:15px;
     padding:10px;
+}
+/* MOBILE NAV */
+
+.mobile-nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    background:#0f172a;
+    display:none;
+    justify-content:space-around;
+    padding:15px 0;
+    z-index:1000;
+    box-shadow:0 -5px 20px rgba(0,0,0,0.3);
+}
+
+.mobile-nav button{
+    background:none;
+    border:none;
+    color:white;
+    font-size:24px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .sidebar{
+        display:none;
+    }
+
+    .main{
+        margin-left:0;
+        padding:20px;
+        padding-bottom:100px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .analytics-grid{
+        grid-template-columns:1fr;
+    }
+
+    table{
+        font-size:14px;
+    }
+
+    .mobile-nav{
+        display:flex;
+    }
+
+    .chart-box{
+        overflow-x:auto;
+    }
+
+
+}
+button{
+    transition:0.2s;
+}
+
+button:active{
+    transform:scale(0.95);
 }
