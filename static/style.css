@@ -250,3 +250,76 @@ button{
 button:active{
     transform:scale(0.95);
 }
+/* TOP BAR */
+
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.theme-btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:18px;
+}
+
+/* SMOOTH MODE */
+
+body,
+.card,
+.analytics-box,
+.analytics-card,
+.chart-box,
+.sidebar{
+    transition:0.3s;
+}
+
+/* LIGHT MODE */
+
+.light-mode{
+    background:#f1f5f9;
+    color:#111;
+}
+
+.light-mode .sidebar{
+    background:white;
+}
+
+.light-mode .card,
+.light-mode .analytics-box,
+.light-mode .analytics-card,
+.light-mode .chart-box{
+    background:white;
+    color:#111;
+}
+
+.light-mode table{
+    background:white;
+    color:#111;
+}
+
+.light-mode th{
+    background:#e2e8f0;
+}
+
+.light-mode td{
+    border-color:#ddd;
+}
+
+.light-mode canvas{
+    background:white;
+}
+
+.light-mode .mobile-nav{
+    background:white;
+}
+
+.light-mode .mobile-nav button{
+    color:#111;
+}

@@ -32,9 +32,15 @@
 <div class="main fade-in">
 
     <!-- DASHBOARD -->
-    <div id="dashboard" class="section">
+   <div class="top-bar">
 
-        <h1>FitZone Dashboard</h1>
+    <h1>FitZone Dashboard</h1>
+
+    <button onclick="toggleTheme()" class="theme-btn">
+        🌙
+    </button>
+
+</div>
 
         <!-- STATS -->
         <div class="stats">
@@ -197,7 +203,21 @@ new Chart(ctx, {
   }
 
 );
+function toggleTheme(){
 
+    document.body.classList.toggle("light-mode");
+
+    if(document.body.classList.contains("light-mode")){
+        localStorage.setItem("theme","light");
+    }else{
+        localStorage.setItem("theme","dark");
+    }
+}
+
+// SAVE THEME
+if(localStorage.getItem("theme") === "light"){
+    document.body.classList.add("light-mode");
+}
 </script>
 <!-- MOBILE NAV -->
 
