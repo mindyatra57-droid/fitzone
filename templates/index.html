@@ -18,12 +18,22 @@
 
     <h2>🏋️ FitZone</h2>
 
-    <a onclick="showSection('dashboard', this)" class="active">Dashboard</a>
-    <a onclick="showSection('members', this)">Members</a>
-    <a onclick="showSection('plans', this)">Plans</a>
+    <a onclick="showSection('dashboard', this)" class="active">
+        Dashboard
+    </a>
+
+    <a onclick="showSection('members', this)">
+        Members
+    </a>
+
+    <a onclick="showSection('plans', this)">
+        Plans
+    </a>
 
     <a href="/logout">
-        <button class="logout-btn">Logout</button>
+        <button class="logout-btn">
+            Logout
+        </button>
     </a>
 
 </div>
@@ -32,15 +42,18 @@
 <div class="main fade-in">
 
     <!-- DASHBOARD -->
-   <div class="top-bar">
+    <div id="dashboard" class="section">
 
-    <h1>FitZone Dashboard</h1>
+        <!-- TOP BAR -->
+        <div class="top-bar">
 
-    <button onclick="toggleTheme()" class="theme-btn">
-        🌙
-    </button>
+            <h1>FitZone Dashboard</h1>
 
-</div>
+            <button onclick="toggleTheme()" class="theme-btn">
+                🌙
+            </button>
+
+        </div>
 
         <!-- STATS -->
         <div class="stats">
@@ -57,7 +70,7 @@
 
             <div class="card">
                 <h3>Monthly Revenue</h3>
-                <h1>₹{{ total_members * 999 }}</h1>
+                <h1>₹{{ members | sum(attribute=5) }}</h1>
             </div>
 
         </div>
@@ -81,7 +94,7 @@
 
                 <div class="analytics-card">
                     <span>💰 Revenue</span>
-                    <h1>₹{{ total_members * 999 }}</h1>
+                    <h1>₹{{ members | sum(attribute=5) }}</h1>
                 </div>
 
             </div>
@@ -102,9 +115,65 @@
     <!-- MEMBERS -->
     <div id="members" class="section" style="display:none;">
 
+        <!-- ADD MEMBER -->
         <div class="card">
 
-            <h3>Members List</h3>
+            <h2>Add Member</h2>
+
+            <form method="POST">
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Member Name"
+                    required
+                >
+
+                <input
+                    type="number"
+                    name="age"
+                    placeholder="Age"
+                    required
+                >
+
+                <input
+                    type="text"
+                    name="plan"
+                    placeholder="Plan"
+                    required
+                >
+
+                <select name="payment" required>
+
+                    <option value="Paid">
+                        Paid
+                    </option>
+
+                    <option value="Pending">
+                        Pending
+                    </option>
+
+                </select>
+
+                <input
+                    type="number"
+                    name="amount"
+                    placeholder="Amount"
+                    required
+                >
+
+                <button type="submit">
+                    Add Member
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- MEMBER TABLE -->
+        <div class="card">
+
+            <h2>Members List</h2>
 
             <table>
 
@@ -112,6 +181,8 @@
                     <th>Name</th>
                     <th>Age</th>
                     <th>Plan</th>
+                    <th>Payment</th>
+                    <th>Amount</th>
                     <th>Actions</th>
                 </tr>
 
@@ -122,15 +193,21 @@
                     <td>{{ m[1] }}</td>
                     <td>{{ m[2] }}</td>
                     <td>{{ m[3] }}</td>
+                    <td>{{ m[4] }}</td>
+                    <td>₹{{ m[5] }}</td>
 
                     <td>
 
                         <a href="/edit/{{ m[0] }}">
-                            <button class="edit-btn">Edit</button>
+                            <button class="edit-btn">
+                                Edit
+                            </button>
                         </a>
 
                         <a href="/delete/{{ m[0] }}">
-                            <button class="delete-btn">Delete</button>
+                            <button class="delete-btn">
+                                Delete
+                            </button>
                         </a>
 
                     </td>
@@ -147,71 +224,22 @@
 
     <!-- PLANS -->
     <div id="plans" class="section" style="display:none;">
+
+        <div class="card">
+
+            <h2>Membership Plans</h2>
+
+            <p>💪 Basic Plan — ₹999</p>
+            <p>🔥 Pro Plan — ₹1999</p>
+            <p>🏆 Premium Plan — ₹2999</p>
+
+        </div>
+
     </div>
 
 </div>
 
-<!-- JS -->
-<script>
-
-function showSection(id, element=null) {
-
-    let sections = document.querySelectorAll(".section");
-
-    sections.forEach(sec => sec.style.display = "none");
-
-    document.getElementById(id).style.display = "block";
-
-    let links = document.querySelectorAll(".sidebar a");
-
-    links.forEach(link => link.classList.remove("active"));
-
-    if(element){
-        element.classList.add("active");
-    }
-}
-// CHART
-const ctx = document.getElementById('myChart');
-
-new Chart(ctx, {
-
-    type: 'line',
-
-    data: {
-
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-
-        datasets: [{
-            label: 'Members Growth',
-            data: [5, 10, 18, 25, 40, {{ total_members }}],
-            borderWidth: 3,
-            tension: 0.4
-        }
-    },
-
-    options:{
-        responsive: true
-  }
-
-);
-function toggleTheme(){
-
-    document.body.classList.toggle("light-mode");
-
-    if(document.body.classList.contains("light-mode")){
-        localStorage.setItem("theme","light");
-    }else{
-        localStorage.setItem("theme","dark");
-    }
-}
-
-// SAVE THEME
-if(localStorage.getItem("theme") === "light"){
-    document.body.classList.add("light-mode");
-}
-</script>
 <!-- MOBILE NAV -->
-
 <div class="mobile-nav">
 
     <button onclick="showSection('dashboard')">
@@ -227,5 +255,90 @@ if(localStorage.getItem("theme") === "light"){
     </button>
 
 </div>
+
+<!-- JAVASCRIPT -->
+<script>
+
+function showSection(id, element=null) {
+
+    let sections = document.querySelectorAll(".section");
+
+    sections.forEach(sec => {
+        sec.style.display = "none";
+    });
+
+    document.getElementById(id).style.display = "block";
+
+    let links = document.querySelectorAll(".sidebar a");
+
+    links.forEach(link => {
+        link.classList.remove("active");
+    });
+
+    if(element){
+        element.classList.add("active");
+    }
+}
+
+// CHART
+const ctx = document.getElementById('myChart');
+
+new Chart(ctx, {
+
+    type: 'line',
+
+    data: {
+
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+
+        datasets: [{
+
+            label: 'Members Growth',
+
+            data: [5, 10, 18, 25, 40, {{ total_members }}],
+
+            borderWidth: 3,
+
+            tension: 0.4,
+
+            fill: true
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true
+
+    }
+
+});
+
+// DARK MODE
+function toggleTheme(){
+
+    document.body.classList.toggle("light-mode");
+
+    if(document.body.classList.contains("light-mode")){
+
+        localStorage.setItem("theme", "light");
+
+    } else {
+
+        localStorage.setItem("theme", "dark");
+
+    }
+}
+
+// SAVE THEME
+if(localStorage.getItem("theme") === "light"){
+
+    document.body.classList.add("light-mode");
+
+}
+
+</script>
+
 </body>
 </html>
