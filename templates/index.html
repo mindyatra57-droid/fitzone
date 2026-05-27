@@ -69,8 +69,8 @@
             </div>
 
             <div class="card">
-                <h3>Monthly Revenue</h3>
-                <h1>₹{{ total_members * 999 }}</h1>
+                <h3>Total Revenue</h3>
+                <h1>₹{{ total_revenue }}</h1>
             </div>
 
         </div>
@@ -88,13 +88,13 @@
                 </div>
 
                 <div class="analytics-card">
-                    <span>🔥 New This Month</span>
+                    <span>🔥 New Members</span>
                     <h1>{{ total_members }}</h1>
                 </div>
 
                 <div class="analytics-card">
                     <span>💰 Revenue</span>
-                    <h1>₹{{ total_members * 999 }}</h1>
+                    <h1>₹{{ total_revenue }}</h1>
                 </div>
 
             </div>
@@ -336,9 +336,7 @@ new Chart(ctx, {
     },
 
     options: {
-
         responsive: true
-
     }
 
 });
@@ -356,7 +354,7 @@ new Chart(paymentCtx, {
 
         datasets: [{
 
-            data: [{{ active_members }}, 2],
+            data: [{{ paid_members }}, {{ pending_members }}],
 
             backgroundColor: [
                 '#00ff88',
@@ -368,9 +366,7 @@ new Chart(paymentCtx, {
     },
 
     options: {
-
         responsive: true
-
     }
 
 });
@@ -405,9 +401,7 @@ new Chart(revenueCtx, {
     },
 
     options: {
-
         responsive: true
-
     }
 
 });
@@ -439,4 +433,3 @@ if(localStorage.getItem("theme") === "light"){
 
 </body>
 </html>
-```

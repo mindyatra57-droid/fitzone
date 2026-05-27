@@ -312,3 +312,18 @@ body.light-mode table tr{
 
 }
 ```
+.check-btn{
+    background: #00ff88;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    color: black;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.check-btn:hover{
+    transform: scale(1.05);
+    opacity: 0.9;
+}
