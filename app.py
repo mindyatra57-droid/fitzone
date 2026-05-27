@@ -14,13 +14,13 @@ def init_db():
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS members (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
-    age TEXT,
-    plan TEXT,
-    payment TEXT,
-    amount TEXT
-)
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        age TEXT,
+        plan TEXT,
+        payment TEXT,
+        amount TEXT
+    )
     """)
 
     conn.commit()
@@ -47,14 +47,16 @@ def index():
         name = request.form["name"]
         age = request.form["age"]
         plan = request.form["plan"]
+        payment = request.form["payment"]
+        amount = request.form["amount"]
 
         cursor.execute(
-           """
-INSERT INTO members
-(name, age, plan, payment, amount)
-VALUES (?, ?, ?, ?, ?)
-"""
-           (name, age, plan, payment, amount)
+            """
+            INSERT INTO members
+            (name, age, plan, payment, amount)
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (name, age, plan, payment, amount)
         )
 
         conn.commit()
@@ -109,10 +111,15 @@ def edit(id):
         age = request.form["age"]
         plan = request.form["plan"]
         payment = request.form["payment"]
-amount = request.form["amount"]
+        amount = request.form["amount"]
+
         cursor.execute(
-            "UPDATE members SET name=?, age=?, plan=? WHERE id=?",
-            (name, age, plan, id)
+            """
+            UPDATE members
+            SET name=?, age=?, plan=?, payment=?, amount=?
+            WHERE id=?
+            """,
+            (name, age, plan, payment, amount, id)
         )
 
         conn.commit()
