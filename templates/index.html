@@ -101,12 +101,35 @@
 
         </div>
 
-        <!-- CHART -->
-        <div class="chart-box">
+        <!-- CHARTS -->
+        <div class="charts-grid">
 
-            <h2>Gym Growth Analytics</h2>
+            <!-- MEMBERS CHART -->
+            <div class="chart-box">
 
-            <canvas id="myChart"></canvas>
+                <h2>📈 Members Growth</h2>
+
+                <canvas id="myChart"></canvas>
+
+            </div>
+
+            <!-- PAYMENT CHART -->
+            <div class="chart-box">
+
+                <h2>💳 Payment Analytics</h2>
+
+                <canvas id="paymentChart"></canvas>
+
+            </div>
+
+            <!-- REVENUE CHART -->
+            <div class="chart-box">
+
+                <h2>💰 Revenue Analytics</h2>
+
+                <canvas id="revenueChart"></canvas>
+
+            </div>
 
         </div>
 
@@ -259,6 +282,7 @@
 <!-- JAVASCRIPT -->
 <script>
 
+// SECTION SWITCH
 function showSection(id, element=null) {
 
     let sections = document.querySelectorAll(".section");
@@ -280,7 +304,7 @@ function showSection(id, element=null) {
     }
 }
 
-// CHART
+// MEMBERS CHART
 const ctx = document.getElementById('myChart');
 
 new Chart(ctx, {
@@ -297,11 +321,84 @@ new Chart(ctx, {
 
             data: [5, 10, 18, 25, 40, {{ total_members }}],
 
-            borderWidth: 3,
+            borderColor: '#00ff88',
+
+            backgroundColor: 'rgba(0,255,136,0.2)',
+
+            borderWidth: 4,
 
             tension: 0.4,
 
             fill: true
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true
+
+    }
+
+});
+
+// PAYMENT CHART
+const paymentCtx = document.getElementById('paymentChart');
+
+new Chart(paymentCtx, {
+
+    type: 'doughnut',
+
+    data: {
+
+        labels: ['Paid', 'Pending'],
+
+        datasets: [{
+
+            data: [{{ active_members }}, 2],
+
+            backgroundColor: [
+                '#00ff88',
+                '#ff4444'
+            ]
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true
+
+    }
+
+});
+
+// REVENUE CHART
+const revenueCtx = document.getElementById('revenueChart');
+
+new Chart(revenueCtx, {
+
+    type: 'bar',
+
+    data: {
+
+        labels: ['Basic', 'Pro', 'Premium'],
+
+        datasets: [{
+
+            label: 'Revenue',
+
+            data: [12000, 19000, 30000],
+
+            backgroundColor: [
+                '#00bfff',
+                '#8a2be2',
+                '#00ff88'
+            ],
+
+            borderRadius: 10
 
         }]
 
@@ -342,3 +439,4 @@ if(localStorage.getItem("theme") === "light"){
 
 </body>
 </html>
+```
